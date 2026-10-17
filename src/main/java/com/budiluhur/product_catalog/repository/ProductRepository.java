@@ -13,7 +13,6 @@ public class ProductRepository {
     private final List<Product> productList = new ArrayList<>();
 
     public ProductRepository() {
-        // Data Awal In-Memory
         productList.add(new Product("PRD-01", "Keyboard Mechanical", 450000.0));
         productList.add(new Product("PRD-02", "Mouse Wireless Silent", 175000.0));
     }
@@ -33,5 +32,27 @@ public class ProductRepository {
             }
         }
         throw new ProductNotFoundException("Produk dengan ID '" + id + "' tidak ditemukan!");
+    }
+
+    public Product updateProduct(String id, Product updatedProduct) throws ProductNotFoundException {
+        Product existingProduct = findById(id);
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        return existingProduct;
+    }
+
+    public boolean deleteById(String id) throws ProductNotFoundException {
+        Product existingProduct = findById(id);
+        return productList.remove(existingProduct);
+    }
+
+    public List<Product> searchByName(String keyword) {
+        List<Product> result = new ArrayList<>();
+        for (Product p : productList) {
+            if (p.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(p);
+            }
+        }
+        return result;
     }
 }

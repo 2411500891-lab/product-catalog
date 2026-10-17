@@ -14,7 +14,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final DiscountService discountService;
 
-    // Constructor Injection: Spring yang mengisi kedua parameter ini
     public ProductService(ProductRepository productRepository, DiscountService discountService) {
         this.productRepository = productRepository;
         this.discountService = discountService;
@@ -33,7 +32,18 @@ public class ProductService {
         return product;
     }
 
-    // Mini Challenge
+    public Product updateProduct(String id, Product product) throws ProductNotFoundException {
+        return productRepository.updateProduct(id, product);
+    }
+
+    public boolean deleteProduct(String id) throws ProductNotFoundException {
+        return productRepository.deleteById(id);
+    }
+
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.searchByName(keyword);
+    }
+
     public double getDiscountedProductPrice(String id, double discount) throws ProductNotFoundException {
         Product product = productRepository.findById(id);
         return discountService.calculateDiscountedPrice(product.getPrice(), discount);
